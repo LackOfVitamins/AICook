@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.Gateway", "AICook.Gateway\AICook.Gateway.csproj", "{1861E461-F386-47EF-ACD9-6F4E831C5C88}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.RecipeService", "AICook.RecipeService\AICook.RecipeService.csproj", "{D1147F24-2A23-461C-ACFB-96693A78652D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.AIWorkerService", "AICook.AIWorkerService\AICook.AIWorkerService.csproj", "{5FE38084-2B75-4460-A527-0F4172FB332F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.Event", "AICook.Event\AICook.Event.csproj", "{A4CC90FF-1DAD-485B-9C9E-BEEB61D68D34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{BF9794B3-4A2E-471E-B0CC-BAD94F10DD04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1861E461-F386-47EF-ACD9-6F4E831C5C88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1861E461-F386-47EF-ACD9-6F4E831C5C88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1861E461-F386-47EF-ACD9-6F4E831C5C88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1861E461-F386-47EF-ACD9-6F4E831C5C88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1147F24-2A23-461C-ACFB-96693A78652D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1147F24-2A23-461C-ACFB-96693A78652D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1147F24-2A23-461C-ACFB-96693A78652D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1147F24-2A23-461C-ACFB-96693A78652D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FE38084-2B75-4460-A527-0F4172FB332F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FE38084-2B75-4460-A527-0F4172FB332F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FE38084-2B75-4460-A527-0F4172FB332F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FE38084-2B75-4460-A527-0F4172FB332F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4CC90FF-1DAD-485B-9C9E-BEEB61D68D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4CC90FF-1DAD-485B-9C9E-BEEB61D68D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4CC90FF-1DAD-485B-9C9E-BEEB61D68D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4CC90FF-1DAD-485B-9C9E-BEEB61D68D34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5FE38084-2B75-4460-A527-0F4172FB332F} = {BF9794B3-4A2E-471E-B0CC-BAD94F10DD04}
+		{D1147F24-2A23-461C-ACFB-96693A78652D} = {BF9794B3-4A2E-471E-B0CC-BAD94F10DD04}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-AICook.AIWorkerService-953E284E-833C-4357-9353-C7C20B741AF4</UserSecretsId>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="AWSSDK.S3" Version="3.7.304.9" />
+        <PackageReference Include="Backblaze.Agent" Version="1.0.1" />
+        <PackageReference Include="MassTransit" Version="8.1.2" />
+        <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.2" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+        <PackageReference Include="OpenAI" Version="1.9.0" />
+        <PackageReference Include="RandomString4Net" Version="1.8.0" />
+        <PackageReference Include="SixLabors.ImageSharp" Version="3.1.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AICook.Event\AICook.Event.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="System.Drawing.Common">
+        <HintPath>..\..\..\..\..\..\.nuget\packages\system.drawing.common\7.0.0\lib\net7.0\System.Drawing.Common.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+</Project>
