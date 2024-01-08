@@ -10,10 +10,13 @@ public class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        
+
         ConfigureServices(builder.Services, builder.Configuration);
 
         var app = builder.Build();
+
+        // Migrating DB
+        MigrateDatabase(app);
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
@@ -68,5 +71,19 @@ public class Program
                 cfg.ConfigureEndpoints(context);
             });
         });
+    }
+
+    private static void MigrateDatabase(WebApplication app) 
+    {
+        using (var scope = app.Services.CreateScope())
+        {
+            var services = scope.ServiceProvider;
+
+            var context = services.GetRequiredService<RecipeContext>();
+            if (context.Database.GetPendingMigrations().Any())
+            {
+                context.Database.Migrate();
+            }
+        }
     }
 }

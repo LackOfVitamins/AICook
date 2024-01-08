@@ -1,0 +1,67 @@
+version: "3.8"
+
+services:
+  yarp-gateway:
+    ports:
+      - 5000:80
+      - 4000:443
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+
+  rabbitmq:
+    ports:
+        - 5001:5672
+    volumes:
+      - aicook-rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: rabbitmq-diagnostics check_port_connectivity
+      interval: 10s
+      timeout: 3s
+      retries: 30
+
+  recipe-service:
+    ports: 
+      - 5010:5010
+    depends_on:
+      recipe-service.db:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    env_file:
+      ./AICook.RecipeService/.env
+  
+  recipe-service.db:
+    ports:
+      - 5011:3306
+    environment:
+      MARIADB_USER: docker
+      MARIADB_ROOT_PASSWORD: docker
+      MARIADB_PASSWORD: docker
+      MARIADB_DATABASE: RecipeService
+    volumes:
+      - aicook-recipe-service-db:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "/usr/local/bin/healthcheck.sh", "--su-mysql", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 3s
+      retries: 30
+  
+  ai-worker-service:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+    env_file:
+      ./AICook.AIWorkerService/.env
+
+volumes:
+  aicook-rabbitmq:
+  aicook-recipe-service-db:
+
+networks:
+  default:
+    name: aicook-yarp-network
+    driver: bridge

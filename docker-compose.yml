@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  yarp-gateway:
+    container_name: yarp-gateway
+    build:
+      context: ./
+      dockerfile: AICook.Gateway/Dockerfile
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    container_name: rabbitmq
+
+  recipe-service:
+    container_name: recipe-service
+    build:
+      context: ./
+      dockerfile: AICook.RecipeService/Dockerfile
+  
+  recipe-service.db:
+    image: mariadb
+    container_name: recipe-service.db
+  
+  ai-worker-service:
+    container_name: ai-worker-service
+    build:
+      context: ./
+      dockerfile: AICook.AIWorkerService/Dockerfile
+
+
+networks:
+  default:
+    name: aicook-yarp-network
+    driver: bridge
