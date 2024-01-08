@@ -1,4 +1,4 @@
-# AICook - AI-Powered Recipe Generation
+# AICook - AI Powered Recipe Generation
 
 AICook is a project that combines the power of OpenAI's ChatGPT-4 Turbo and DALL-E 2 to create recipes. The backend is built using ASP.NET and uses a microservices architecture to create a scalable and efficient system.
 
