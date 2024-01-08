@@ -23,7 +23,7 @@ public static class ChatGptPrompts
         "Write a short and apealing title for the recipe. The property for the title will be Tt.";
 
     private const string RecipeDalle =
-        "Write a prompt for DALL-E to generate an appetizing, vibrant and real-looking cinematic image of the end product of this recipe on a plate in a well-lit modern looking kitchen, do not include the name of the author in the prompt. The prompt must be less than 300 characters. Put this in the Dp property.";
+        "Write a prompt for DALL-E to generate an appetizing, vibrant and real-looking cinematic image of the end product of this recipe on a plate in a well-lit modern looking kitchen, do not include the name of the author in the prompt. The prompt must be less than 300 characters. Make sure the prompt doesn't voilate the content policy. Put this in the Dp property.";
     
     public static ChatMessage RecipeIdeaChatMessage(string recipeIdea) => new (ChatMessageRole.User, 
         $"This is the recipe idea: {recipeIdea}");
