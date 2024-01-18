@@ -6,7 +6,7 @@
 
 <div class="app">
 	<Header />
-	<main>
+	<main class="container flex flex-col max-w-screen-2xl">
 		<slot></slot>
 	</main>
 

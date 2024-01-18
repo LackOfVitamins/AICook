@@ -8,7 +8,7 @@
   <div class="container flex justify-between items-center max-w-screen-2xl h-16 sm:h-20">
     <div>
       <a href="/" class="flex items-center space-x-2">
-        <span class="font-bold  sm:text-xl">
+        <span class="font-bold sm:text-xl">
           AICook
         </span>
       </a>
