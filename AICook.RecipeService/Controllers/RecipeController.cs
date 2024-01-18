@@ -20,13 +20,13 @@ namespace AICook.RecipeService.Controllers
         : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<RecipeDto>>> GetRecipes()
+        public async Task<ActionResult<IEnumerable<RecipeListItemDto>>> GetRecipes()
         {
             return await context.Recipes
                 .Where(r => r.Visible == true)
                 .Include(r => r.Steps)
                 .Include(r => r.Ingredients)
-                .Select(r => mapper.Map<RecipeDto>(r))
+                .Select(r => mapper.Map<RecipeListItemDto>(r))
                 .ToListAsync();
         }
         

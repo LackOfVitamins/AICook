@@ -5,20 +5,23 @@ public record RecipeDto(
     string Title,
     string IntroText,
     string ImageUrl,
-    bool Visible,
     ICollection<RecipeStepDto> Steps,
     ICollection<RecipeIngredientDto> Ingredients)
 {}
 
+public record RecipeListItemDto(
+    int Id,
+    string Title,
+    string ImageUrl)
+{}
+
 public record RecipeIngredientDto(
     string Name,
-    string Quantity
-    )
+    string Quantity)
 {}
 
 public record RecipeStepDto(
     int StepNumber,
-    string StepText
-)
+    string StepText)
 {}
 

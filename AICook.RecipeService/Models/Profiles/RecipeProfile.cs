@@ -8,6 +8,7 @@ public class RecipeProfile : Profile
     public RecipeProfile()
     {
         CreateMap<Recipe, RecipeDto>();
+        CreateMap<Recipe, RecipeListItemDto>();
         CreateMap<RecipeStep, RecipeStepDto>();
         CreateMap<RecipeIngredient, RecipeIngredientDto>();
     }
