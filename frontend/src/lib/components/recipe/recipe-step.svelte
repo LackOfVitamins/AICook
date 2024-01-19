@@ -10,7 +10,7 @@
       <div class="flex w-[50px] h-[50px] min-w-[50px] border rounded-full  items-center justify-center font-bold text-lg">
         <span>{step.stepNumber}</span>
       </div>
-      <div class="">
+      <div class="text-base">
         <p>{step.stepText}</p>
       </div>
     </div>

@@ -7,17 +7,18 @@
   export let ingredients: RecipeIngredient[]; 
 </script>
 
-<Card.Root class="w-full h-fit md:w-2/5">
-  <Card.Header>
+<Card.Root class="w-full h-fit ">
+  <!-- <Card.Header>
     <Card.Title>Ingredients</Card.Title>
-  </Card.Header>
-  <Card.Content>
+  </Card.Header> -->
+  <Card.Content class=" pt-6">
     <div class="flex flex-col space-y-2">
       {#each ingredients as ingredient}
         <div class="flex flow-row items-center space-x-2">
           <Checkbox id="{slugify(ingredient.name)}" />
-          <Label class="cursor-pointer" for="{slugify(ingredient.name)}">
-            {ingredient.quantity} {ingredient.name} 
+          <Label class="cursor-pointer text-base" for="{slugify(ingredient.name)}">
+            <span class="font-bold">{ingredient.quantity}</span>
+            <span>{ingredient.name}</span> 
           </Label>
         </div>
       {/each}    

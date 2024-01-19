@@ -14,15 +14,13 @@
       </a>
     </div>
     <div>
-      <nav class="flex items-center">
+      <nav class="flex items-center space-x-2">
         <ModeToggle />
 
-        <Button variant="ghost" size="icon">
-          <Avatar.Root>
-            <Avatar.Image src="" alt="example" />
-            <Avatar.Fallback>EX</Avatar.Fallback>
-          </Avatar.Root>
-        </Button>
+        <Avatar.Root>
+          <Avatar.Image src="" alt="example" />
+          <Avatar.Fallback>EX</Avatar.Fallback>
+        </Avatar.Root>
       </nav>
     </div>
   </div>
