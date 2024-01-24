@@ -8,9 +8,6 @@
 </script>
 
 <Card.Root class="w-full h-fit ">
-  <!-- <Card.Header>
-    <Card.Title>Ingredients</Card.Title>
-  </Card.Header> -->
   <Card.Content class=" pt-6">
     <div class="flex flex-col space-y-2">
       {#each ingredients as ingredient}

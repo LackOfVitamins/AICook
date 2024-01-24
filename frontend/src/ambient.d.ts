@@ -22,3 +22,7 @@ type RecipeStepType = {
   stepNumber: number,
   stepText: string
 }
+
+type RecipeCreatePostType = {
+  prompt: string
+}
