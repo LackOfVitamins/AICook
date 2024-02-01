@@ -48,13 +48,6 @@ namespace AICook.RecipeService.Controllers
         }
         
         [HttpPost("create")]
-        [Consumes("application/x-www-form-urlencoded", "multipart/form-data")]
-        public async Task<IActionResult> CreateForm([FromForm] AiRecipeRequest recipeIdea)
-        {
-            return await CreateJson(recipeIdea);
-        }
-
-        [HttpPost("create")]
         [Consumes("application/json")]
         public async Task<IActionResult> CreateJson([FromBody] AiRecipeRequest recipeIdea)
         {

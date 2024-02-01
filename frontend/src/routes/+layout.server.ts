@@ -1,9 +1,10 @@
-import { superValidate } from "sveltekit-superforms/client";
 import type { LayoutServerLoad } from "./$types";
-import { formSchema } from "@/schema/api/recipe/create";
+import { formSchema } from "$routes/recipe/create/schema";
+import { superValidate } from "sveltekit-superforms/server";
 
 export const load: LayoutServerLoad = async () => {
   return {
     form: await superValidate(formSchema)
   };
 };
+

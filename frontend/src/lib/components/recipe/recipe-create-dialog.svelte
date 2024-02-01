@@ -3,24 +3,28 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import * as Form from "$lib/components/ui/form";
 
-  import { PUBLIC_API_URL } from "$env/static/public";
   import type { SuperValidated } from 'sveltekit-superforms';
-  import { formSchema, type FormSchema } from '$lib/schema/api/recipe/create';
-  import type { FormOptions, SubmitFunction } from 'formsnap';
+  import { formSchema, type FormSchema } from '$routes/recipe/create/schema';
+  import type { FormOptions } from 'formsnap';
+  import type { FormResult } from 'sveltekit-superforms/client';
+  import type { ActionData } from '../../../routes/recipe/create/$types';
 
   let dialogOpen: boolean = false;
 
-  const options: FormOptions<typeof formSchema> = {
-    validators: formSchema,
-    onSubmit: async ({}) => {
-      dialogOpen = !dialogOpen;
+  const options: FormOptions<FormSchema> = {
+    onResult: (event) => {
+      const result = event.result as FormResult<ActionData>;
+      
+      if(result.type == "success") {
+        dialogOpen = false;
+      }
     }
   };
 
   export let form: SuperValidated<FormSchema>;
 </script>
 
-<Dialog.Root open={dialogOpen}>
+<Dialog.Root open={dialogOpen} onOpenChange={(state) => dialogOpen = state}>
   <Dialog.Trigger class={buttonVariants({ variant: "outline" })}>
     Add Recipe
   </Dialog.Trigger>
@@ -28,10 +32,10 @@
     <Dialog.Header>
       <Dialog.Title>Add Recipe</Dialog.Title>
       <Dialog.Description>
-        Enter a recipe idea below. AI will take over from there!
+        Enter your recipe idea below. AI will take over from there!
       </Dialog.Description>
     </Dialog.Header>
-    <Form.Root {form} {options} schema={formSchema} action={`${PUBLIC_API_URL}/api/recipe/create`} let:config >
+    <Form.Root {form} {options} schema={formSchema} action='/recipe/create' let:config>
       <Form.Field {config} name="prompt">
         <Form.Item>
           <Form.Label>Recipe Idea</Form.Label>

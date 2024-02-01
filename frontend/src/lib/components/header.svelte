@@ -4,7 +4,7 @@
   import * as Dialog from "$lib/components/ui/dialog";
   import * as Avatar from "$lib/components/ui/avatar";
   import RecipeCreateDialog from '$lib/components/recipe/recipe-create-dialog.svelte';
-  import type { FormSchema } from '$lib/schema/api/recipe/create';
+  import type { FormSchema } from '$routes/recipe/create/schema';
   import type { SuperValidated } from 'sveltekit-superforms';
 
   export let recipeCreateForm: SuperValidated<FormSchema>;
