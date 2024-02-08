@@ -1,7 +1,7 @@
 import { fail, type Actions } from "@sveltejs/kit";
 import { superValidate } from "sveltekit-superforms/server";
 import { formSchema } from "./schema";
-import { PUBLIC_API_URL } from "$env/static/public";
+import { PRIVATE_API_URL } from "$env/static/private";
 
 export const actions: Actions = {
   default: async (event) => {
@@ -13,7 +13,7 @@ export const actions: Actions = {
       });
     }
 
-    const apiCall = await fetch(`${PUBLIC_API_URL}/recipe/create`,
+    const apiCall = await fetch(`${PRIVATE_API_URL}/recipe/create`,
     {
       method: "POST",
       headers: {
