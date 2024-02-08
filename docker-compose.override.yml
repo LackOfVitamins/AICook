@@ -7,9 +7,11 @@ services:
       - NODE_ENV=development
       # Sets the timezone of the containers OS
       - TZ=Europe/Amsterdam
+      # Sets origin for csrf attacks
+      - ORIGIN=http://localhost:5000
     restart: unless-stopped
     ports:
-        - 3000:5050
+      - 3000:5050
 
   yarp-gateway:
     ports:
