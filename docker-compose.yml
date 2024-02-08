@@ -1,6 +1,14 @@
 version: "3.8"
 
 services:
+  frontend:
+    container_name: frontend
+    user: "node"
+    # The name of the image that will be created when building this container
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+
   yarp-gateway:
     container_name: yarp-gateway
     build:
