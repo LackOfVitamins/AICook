@@ -1,6 +1,4 @@
-using System.Reflection;
 using AICook.Event.Configuration;
-using Amazon.S3;
 using MassTransit;
 using OpenAI_API;
 
