@@ -7,7 +7,9 @@ ENV ASPNETCORE_URLS=http://+:5010
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+COPY ["AICook.Model/AICook.Model.csproj", "AICook.Model/"]
 COPY ["AICook.Event/AICook.Event.csproj", "AICook.Event/"]
+COPY ["AICook.Model/AICook.Access.csproj", "AICook.Access/"]
 COPY ["AICook.RecipeService/AICook.RecipeService.csproj", "AICook.RecipeService/"]
 RUN dotnet restore "AICook.RecipeService/AICook.RecipeService.csproj"
 COPY . .

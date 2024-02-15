@@ -1,13 +1,7 @@
-using System.Runtime.InteropServices.JavaScript;
-using AICook.Event.Contracts;
-using Bytewizer.Backblaze.Client;
+using AICook.Event.Contracts.Recipe;
 using MassTransit;
 using OpenAI_API;
 using OpenAI_API.Images;
-using OpenAI_API.Models;
-using RandomString4Net;
-using SixLabors.ImageSharp;
-using SixLabors.ImageSharp.Formats.Webp;
 
 namespace AICook.AIWorkerService.Consumers;
 
@@ -29,7 +23,7 @@ public class AiRecipeImageGenerationRequestConsumer(
 
         var imageRequest = new ImageGenerationRequest(
             prompt,
-            Model.DALLE2,
+            OpenAI_API.Models.Model.DALLE2,
             ImageSize._1024,
             responseFormat: ImageResponseFormat.B64_json
         );

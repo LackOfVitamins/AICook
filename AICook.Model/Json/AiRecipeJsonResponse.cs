@@ -1,4 +1,4 @@
-namespace AICook.Event.Json;
+namespace AICook.Model.Json;
 
 /// <summary>
 /// The JSON object for the recipe
@@ -9,13 +9,12 @@ namespace AICook.Event.Json;
 /// <param name="St">Steps</param>
 /// <param name="Ig">Ingredients</param>
 public record AiRecipeJsonResponse(
-    string Tt,
-    string In,
-    string Dp,
-    IList<AiRecipeJsonResponseRecipeStep> St,
-    IList<AiRecipeJsonResponseRecipeIngredient> Ig)
-{
-}
+	string Tt,
+	string In,
+	string Dp,
+	IList<AiRecipeJsonResponseRecipeStep> St,
+	IList<AiRecipeJsonResponseRecipeIngredient> Ig
+);
 
 /// <summary>
 /// The JSON object for the recipe step
@@ -23,10 +22,9 @@ public record AiRecipeJsonResponse(
 /// <param name="Nb">StepNumber</param>
 /// <param name="Tx">StepText</param>
 public record AiRecipeJsonResponseRecipeStep(
-    int Nb,
-    string Tx)
-{
-}
+	int Nb,
+	string Tx
+);
 
 /// <summary>
 /// The JSON object for the recipe ingriedient
@@ -34,8 +32,7 @@ public record AiRecipeJsonResponseRecipeStep(
 /// <param name="Nm">Name</param>
 /// <param name="Qn">Quantity</param>
 public record AiRecipeJsonResponseRecipeIngredient(
-    string Nm,
-    string Qn)
-{
-}
+	string Nm,
+	string Qn
+);
 

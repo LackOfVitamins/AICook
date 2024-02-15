@@ -1,7 +1,6 @@
-namespace AICook.Event.Contracts;
+namespace AICook.Event.Contracts.Recipe;
 
 public record AiRecipeImageUploadRequest(
     int RecipeId,
-    byte[] Image)
-{
-}
+    byte[] Image
+);

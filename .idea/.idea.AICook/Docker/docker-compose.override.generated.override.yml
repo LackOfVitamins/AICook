@@ -1,0 +1,76 @@
+# This is a generated file. Not intended for manual editing.
+version: "3.8"
+services:
+  ai-worker-service:
+    build:
+      context: "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook"
+      dockerfile: "AICook.AIWorkerService/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/AICook.AIWorkerService.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "aicook.aiworkerservice:dev"
+    ports: []
+    volumes:
+    - "/home/ruben/.microsoft/usersecrets:/home/app/.microsoft/usersecrets"
+    - "/home/ruben/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook/AICook.AIWorkerService:/app:rw"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook:/src:rw"
+    working_dir: "/app"
+  identity-service:
+    build:
+      context: "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook"
+      dockerfile: "AICook.Identity/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/AICook.Identity.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "aicook.identity:dev"
+    ports: []
+    volumes:
+    - "/home/ruben/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook/AICook.Identity:/app:rw"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook:/src:rw"
+    working_dir: "/app"
+  recipe-service:
+    build:
+      context: "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook"
+      dockerfile: "AICook.RecipeService/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/AICook.RecipeService.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "aicook.recipeservice:dev"
+    ports: []
+    volumes:
+    - "/home/ruben/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook/AICook.RecipeService:/app:rw"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook:/src:rw"
+    working_dir: "/app"
+  yarp-gateway:
+    build:
+      context: "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook"
+      dockerfile: "AICook.Gateway/Dockerfile"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/AICook.Gateway.dll"
+    environment:
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "aicook.gateway:dev"
+    ports: []
+    volumes:
+    - "/home/ruben/.nuget/packages:/home/app/.nuget/packages"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook/AICook.Gateway:/app:rw"
+    - "/home/ruben/Documents/Projecten/Eigen/CSharp/AICook:/src:rw"
+    working_dir: "/app"

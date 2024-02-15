@@ -10,11 +10,11 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("cors", builder =>
+            options.AddPolicy("cors", corsBuilder =>
             {
-                builder.AllowAnyHeader();
-                builder.AllowAnyMethod();
-                builder.AllowAnyOrigin();
+	            corsBuilder.AllowAnyHeader();
+	            corsBuilder.AllowAnyMethod();
+	            corsBuilder.AllowAnyOrigin();
             });
         });
         

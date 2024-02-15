@@ -1,19 +1,14 @@
-
-using AICook.RecipeService.Models;
+using AICook.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace AICook.RecipeService.Data;
 
-public class RecipeContext : DbContext
+public class RecipeContext(DbContextOptions<RecipeContext> options) : DbContext(options)
 {
     public DbSet<RecipeIngredient> Ingredients { get; set; }
     public DbSet<Recipe> Recipes { get; set; }
     // public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
     public DbSet<RecipeStep> RecipeSteps { get; set; }
-
-    public RecipeContext(DbContextOptions<RecipeContext> options) : base(options)
-    {
-    }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

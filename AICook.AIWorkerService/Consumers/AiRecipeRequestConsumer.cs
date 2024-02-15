@@ -1,14 +1,17 @@
 using System.Text.Json;
 using System.Text.RegularExpressions;
-using AICook.Event.Contracts;
-using AICook.Event.Json;
+using AICook.Event.Contracts.Recipe;
+using AICook.Model.Json;
 using MassTransit;
 using OpenAI_API;
-using OpenAI_API.Models;
 
 namespace AICook.AIWorkerService.Consumers;
 
-public class AiRecipeRequestConsumer(IOpenAIAPI openAiApi, IBus bus, ILogger<AiRecipeRequestConsumer> logger) : IConsumer<AiRecipeRequest>
+public partial class AiRecipeRequestConsumer(
+	IOpenAIAPI openAiApi, 
+	IBus bus, 
+	ILogger<AiRecipeRequestConsumer> logger
+) : IConsumer<AiRecipeRequest>
 {
     public async Task Consume(ConsumeContext<AiRecipeRequest> context)
     {
@@ -17,7 +20,7 @@ public class AiRecipeRequestConsumer(IOpenAIAPI openAiApi, IBus bus, ILogger<AiR
         
         // Setting up model
         var conversation = openAiApi.Chat.CreateConversation();
-        conversation.Model = Model.GPT4_Turbo;
+        conversation.Model = OpenAI_API.Models.Model.GPT4_Turbo;
         conversation.RequestParameters.Temperature = 0;
         conversation.RequestParameters.MaxTokens = 2048;
 
@@ -31,7 +34,7 @@ public class AiRecipeRequestConsumer(IOpenAIAPI openAiApi, IBus bus, ILogger<AiR
         try
         {
             // Removing potential markdown code block tags
-            response = Regex.Replace(response, "`{3}([\\w]*)", "");
+            response = CodeBlockRegex().Replace(response, "");
             
             // Deserializing the response from OpenAI (GPT)
             var jsonResponse = JsonSerializer.Deserialize<AiRecipeJsonResponse>(response)!;
@@ -42,4 +45,7 @@ public class AiRecipeRequestConsumer(IOpenAIAPI openAiApi, IBus bus, ILogger<AiR
             logger.LogError("Deserializing response failed! Exception: {Exception}", e.Message);
         }
     }
+
+    [GeneratedRegex("`{3}([\\w]*)")]
+    private static partial Regex CodeBlockRegex();
 }

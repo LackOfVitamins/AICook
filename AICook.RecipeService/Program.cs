@@ -1,4 +1,6 @@
+using AICook.Authorization.Authentication;
 using AICook.Event.Configuration;
+using AICook.Model.Profiles;
 using AICook.RecipeService.Data;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +20,7 @@ public class Program
         // Migrating DB
         MigrateDatabase(app);
 
-        // Configure the HTTP request pipeline.
+        // Swagger
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -27,11 +29,11 @@ public class Program
 
         // app.UseHttpsRedirection();
 
-        // app.UseAuthorization();
-
-
+        // Authentication & Authorization
+        app.UseAuthentication();
+        app.UseAuthorization();
+        
         app.MapControllers();
-
         app.Run();
     }
 
@@ -40,22 +42,35 @@ public class Program
         // Logging
         services.AddLogging();
         
-        // Mapping & controllers
-        services.AddAutoMapper(typeof(Program));
+        // Model Mapping
+        services.AddAutoMapper(config =>
+        {
+	        config.AddProfile<RecipeProfile>();
+        });
+        
+        // Controllers
         services.AddControllersWithViews();
         
         // Database
         var connectionString = configuration.GetConnectionString("MySqlDatabase")!;
         services.AddDbContext<RecipeContext>(options => 
-            options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+	        options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
+        );
             
-        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        // Swagger
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
+
+        // Authentication & Authorization
+        services.AddAuthentication()
+	        .AddScheme<JwtAuthenticationSchemeOptions, JwtAuthenticationSchemeHandler>(
+		        "JwtTokenIdentityScheme",
+		        _ => {}
+	        );
+        services.AddAuthorization();
         
         // MassTransit RabbitMQ
         var mtConfig = MassTransitConfiguration.FromConfiguration(configuration);
-        
         services.AddMassTransit(options =>
         {
             options.AddConsumers(typeof(Program).Assembly);
@@ -73,17 +88,15 @@ public class Program
         });
     }
 
-    private static void MigrateDatabase(WebApplication app) 
+    private static void MigrateDatabase(IHost app)
     {
-        using (var scope = app.Services.CreateScope())
-        {
-            var services = scope.ServiceProvider;
+	    using var scope = app.Services.CreateScope();
+	    var services = scope.ServiceProvider;
 
-            var context = services.GetRequiredService<RecipeContext>();
-            if (context.Database.GetPendingMigrations().Any())
-            {
-                context.Database.Migrate();
-            }
-        }
+	    var context = services.GetRequiredService<RecipeContext>();
+	    if (context.Database.GetPendingMigrations().Any())
+	    {
+		    context.Database.Migrate();
+	    }
     }
 }

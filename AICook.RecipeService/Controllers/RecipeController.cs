@@ -1,10 +1,9 @@
-using AICook.Event.Contracts;
+using AICook.Event.Contracts.Recipe;
+using AICook.Model.Dto;
 using AICook.RecipeService.Data;
-using AICook.RecipeService.Models;
-using AICook.RecipeService.Models.DTO;
 using AutoMapper;
 using MassTransit;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,8 +15,8 @@ namespace AICook.RecipeService.Controllers
         RecipeContext context, 
         IMapper mapper, 
         IBus bus, 
-        ILogger<RecipeController> logger) 
-        : ControllerBase
+        ILogger<RecipeController> logger
+    ) : ControllerBase
     {
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RecipeListItemDto>>> GetRecipes()
@@ -46,7 +45,8 @@ namespace AICook.RecipeService.Controllers
             
             return mapper.Map<RecipeDto>(recipe);
         }
-        
+     
+        [Authorize]
         [HttpPost("create")]
         [Consumes("application/json")]
         public async Task<IActionResult> CreateJson([FromBody] AiRecipeRequest recipeIdea)

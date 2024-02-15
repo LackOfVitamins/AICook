@@ -1,6 +1,5 @@
-using AICook.Event.Contracts;
+using AICook.Event.Contracts.Recipe;
 using Bytewizer.Backblaze.Client;
-using Bytewizer.Backblaze.Extensions;
 using MassTransit;
 using RandomString4Net;
 using SixLabors.ImageSharp;

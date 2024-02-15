@@ -12,6 +12,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.Identity", "AICook.Identity\AICook.Identity.csproj", "{28A7B510-2C0F-4DB0-9C6F-2DE5241AEFE1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.Access", "AICook.Access\AICook.Access.csproj", "{3AFC2CFA-7D4F-466E-B984-18E1159CA44C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AICook.Model", "AICook.Model\AICook.Model.csproj", "{5C2A9389-15C9-4452-B1B2-92E684F02F48}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +42,14 @@ Global
 		{28A7B510-2C0F-4DB0-9C6F-2DE5241AEFE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28A7B510-2C0F-4DB0-9C6F-2DE5241AEFE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28A7B510-2C0F-4DB0-9C6F-2DE5241AEFE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3AFC2CFA-7D4F-466E-B984-18E1159CA44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3AFC2CFA-7D4F-466E-B984-18E1159CA44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3AFC2CFA-7D4F-466E-B984-18E1159CA44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3AFC2CFA-7D4F-466E-B984-18E1159CA44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5C2A9389-15C9-4452-B1B2-92E684F02F48}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5C2A9389-15C9-4452-B1B2-92E684F02F48}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5C2A9389-15C9-4452-B1B2-92E684F02F48}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5C2A9389-15C9-4452-B1B2-92E684F02F48}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{5FE38084-2B75-4460-A527-0F4172FB332F} = {BF9794B3-4A2E-471E-B0CC-BAD94F10DD04}

@@ -27,10 +27,4 @@
     <ItemGroup>
       <ProjectReference Include="..\AICook.Event\AICook.Event.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="System.Drawing.Common">
-        <HintPath>..\..\..\..\..\..\.nuget\packages\system.drawing.common\7.0.0\lib\net7.0\System.Drawing.Common.dll</HintPath>
-      </Reference>
-    </ItemGroup>
 </Project>

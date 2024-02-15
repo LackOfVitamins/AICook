@@ -1,4 +1,4 @@
-using AICook.Event.Contracts;
+using AICook.Event.Contracts.Recipe;
 using AICook.RecipeService.Data;
 using MassTransit;
 

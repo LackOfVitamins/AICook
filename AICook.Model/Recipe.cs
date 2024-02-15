@@ -1,6 +1,6 @@
-using AICook.Event.Json;
+using AICook.Model.Json;
 
-namespace AICook.RecipeService.Models;
+namespace AICook.Model;
 
 public class Recipe
 {

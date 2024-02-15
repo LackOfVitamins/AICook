@@ -1,6 +1,6 @@
-using AICook.Event.Contracts;
+using AICook.Event.Contracts.Recipe;
+using AICook.Model;
 using AICook.RecipeService.Data;
-using AICook.RecipeService.Models;
 using MassTransit;
 
 namespace AICook.RecipeService.Consumers;

@@ -1,7 +1,7 @@
-using AICook.RecipeService.Models.DTO;
+using AICook.Model.Dto;
 using AutoMapper;
 
-namespace AICook.RecipeService.Models.Profiles;
+namespace AICook.Model.Profiles;
 
 public class RecipeProfile : Profile
 {

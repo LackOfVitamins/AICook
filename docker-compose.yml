@@ -35,6 +35,15 @@ services:
       context: ./
       dockerfile: AICook.AIWorkerService/Dockerfile
 
+  identity-service:
+    container_name: identity-service
+    build:
+      context: ./
+      dockerfile: AICook.Identity/Dockerfile
+
+  identity-service.db:
+    image: mariadb
+    container_name: identity-service.db
 
 networks:
   default:
