@@ -7,7 +7,8 @@ public class IdentityContext(
 	DbContextOptions<IdentityContext> options
 ) : DbContext(options)
 {
-	public DbSet<User> Users { get; set; }
+	public DbSet<LoginToken> Tokens { get; init; }
+	public DbSet<User> Users { get; init; }
 	
 	protected override void OnModelCreating(ModelBuilder builder)
 	{

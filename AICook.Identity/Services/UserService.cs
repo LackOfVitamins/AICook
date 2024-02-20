@@ -8,20 +8,22 @@ namespace AICook.Identity.Services;
 public interface IUserService
 {
 	Task<User?> Authenticate(LoginDto model);
+	Task<User?> Authenticate(LoginTokenDto model);
 	Task<User?> Register(RegisterDto model);
-	Task<User?> GetByEmail(string email);
-	Task<User?> GetById(Guid id);
+	Task<User?> Get(string email);
+	Task<User?> Get(Guid id);
 }
 
 public class UserService(
-	IdentityContext context
+	IdentityContext context,
+	ITokenService tokenService
 ) : IUserService
 {
 	private const int BCryptWorkFactor = 13;
 	
 	public async Task<User?> Authenticate(LoginDto model)
 	{
-		var user = await GetByEmail(model.Email);
+		var user = await Get(model.Email);
 
 		if(user == null)
 			return null;
@@ -33,6 +35,26 @@ public class UserService(
 			return null;
 
 		return user;
+	}
+
+	public async Task<User?> Authenticate(LoginTokenDto model)
+	{
+		var loginToken = await tokenService.Get(model.Id);
+
+		if (loginToken == null)
+			return null;
+
+		if (loginToken.Expires <= DateTime.Now)
+			return null;
+		
+		if (!BCrypt.Net.BCrypt.Verify(model.Token, loginToken.TokenHash))
+			return null;
+		
+		loginToken.UseCount++;
+		loginToken.LastUsed = DateTime.Now;
+		await tokenService.Update(loginToken);
+
+		return loginToken.User;
 	}
 
 	public async Task<User?> Register(RegisterDto model)
@@ -48,15 +70,16 @@ public class UserService(
 			}
 		);
 
+		await context.SaveChangesAsync();
 		return entry.Entity;
 	}
 
-	public async Task<User?> GetByEmail(string email)
+	public async Task<User?> Get(string email)
 	{
 		return await context.Users.SingleOrDefaultAsync(x => x.Email == email);
 	}
 
-	public async Task<User?> GetById(Guid id)
+	public async Task<User?> Get(Guid id)
 	{
 		return await context.Users.FindAsync(id);
 	}

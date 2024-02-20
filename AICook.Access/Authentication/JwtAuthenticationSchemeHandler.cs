@@ -26,20 +26,14 @@ public class JwtAuthenticationSchemeHandler(
 
 		var authorizationHeader = Request.Headers.Authorization.ToString();
 		if (string.IsNullOrEmpty(authorizationHeader))
-		{
 			return AuthenticateResult.NoResult();
-		}
 
 		if (!authorizationHeader.StartsWith("bearer", StringComparison.OrdinalIgnoreCase))
-		{
 			return AuthenticateResult.Fail("Unauthorized");
-		}
 
 		var token = authorizationHeader.Substring("bearer".Length).Trim();
 		if (string.IsNullOrEmpty(token))
-		{
 			return AuthenticateResult.Fail("Unauthorized");
-		}
 
 		var response = await requestClient.GetResponse<JwtVerificationRequestSuccess, JwtVerificationRequestFailure>(
 			new JwtVerificationRequest(

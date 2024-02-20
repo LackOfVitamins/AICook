@@ -1,6 +1,8 @@
+using AICook.Authorization.Authentication;
 using AICook.Event.Configuration;
 using AICook.Identity.Data;
 using AICook.Identity.Services;
+using AICook.Model.Profiles;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,6 +24,9 @@ public class Program
 			app.UseSwagger();
 			app.UseSwaggerUI();
 		}
+
+		app.UseAuthentication();
+		app.UseAuthorization();
 		
 		app.MapControllers();
 		app.Run();
@@ -32,30 +37,22 @@ public class Program
 		// Logging
 		services.AddLogging();
 		
+		// Database
 		var connectionString = configuration.GetConnectionString("MySqlDatabase")!;
 		services.AddDbContext<IdentityContext>(
 			options => options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 		);
 		
-		// services.AddIdentity<IdentityUser, IdentityRole>()
-		// 	.AddEntityFrameworkStores<IdentityContext>()
-		// 	.AddDefaultTokenProviders();
-		//
-		// services.AddAuthentication(options =>
-		// 	{
-		// 		options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-		// 		options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-		// 		options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-		// 	}
-		// ).AddJwtBearer(options =>
-		// 	{
-		// 		options.SaveToken = true;
-		// 		options.RequireHttpsMetadata = false;
-		// 	}
-		// );
+		// Authentication & Authorization
+		services.AddAuthentication()
+			.AddScheme<JwtAuthenticationSchemeOptions, JwtAuthenticationSchemeHandler>(
+				"JwtTokenIdentityScheme",
+				_ => {}
+			);
+		services.AddAuthorization();
 		
+		// Masstransit
 		var mtConfig = MassTransitConfiguration.FromConfiguration(configuration);
-        
 		services.AddMassTransit(options =>
 		{
 			options.AddConsumers(typeof(Program).Assembly);
@@ -72,13 +69,23 @@ public class Program
 			});
 		});
 		
+		// Controllers
 		services.AddControllers();
 		
+		// Swagger
 		services.AddEndpointsApiExplorer();
 		services.AddSwaggerGen();
 		
+		// Services
 		services.AddScoped<IJwtService, JwtService>();
 		services.AddScoped<IUserService, UserService>();
+		services.AddScoped<ITokenService, TokenService>();
+		
+		// Mapper 
+		services.AddAutoMapper(options =>
+		{
+			options.AddProfile<UserProfile>();
+		});
 	}
 	
 	private static void MigrateDatabase(IHost app)

@@ -22,7 +22,7 @@ public class JwtVerificationRequestConsumer(
 			return;
 		}
 		
-		var user = await userService.GetById(userId.Value);
+		var user = await userService.Get(userId.Value);
 		if (user == null)
 		{
 			await Failure(context);

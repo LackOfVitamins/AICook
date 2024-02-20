@@ -1,6 +1,6 @@
 namespace AICook.Model.Dto;
 
 public record LoginResponseDto(
-	string Token
-	// DateTime Expires
+	string Token,
+	UserDto User
 );
