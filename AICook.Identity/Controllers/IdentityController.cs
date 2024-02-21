@@ -1,7 +1,9 @@
+using System.Security.Claims;
 using AICook.Identity.Services;
 using AICook.Model;
 using AICook.Model.Dto;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AICook.Identity.Controllers;
@@ -35,6 +37,7 @@ public class IdentityController(
 	[HttpPost("token")]
 	public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginTokenDto model)
 	{
+		// if(Guid.TryParse(model.))
 		var user = await userService.Authenticate(model);
 
 		if (user == null)
@@ -46,6 +49,20 @@ public class IdentityController(
 				jwtService.WriteJwtToken(token),
 				mapper.Map<UserDto>(user)
 			)
+		);
+	}
+
+	[Authorize]
+	[HttpGet("user")]
+	public async Task<ActionResult<UserDto>> UserInfo()
+	{
+		var user = await userService.Get(HttpContext.User);
+		
+		if(user == null)
+			return BadRequest();
+
+		return Ok(
+			mapper.Map<UserDto>(user)
 		);
 	}
 }

@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using AICook.Identity.Data;
 using AICook.Model;
 using AICook.Model.Dto;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AICook.Identity.Services;
@@ -12,6 +14,7 @@ public interface IUserService
 	Task<User?> Register(RegisterDto model);
 	Task<User?> Get(string email);
 	Task<User?> Get(Guid id);
+	Task<User?> Get(ClaimsPrincipal claimsPrincipal);
 }
 
 public class UserService(
@@ -82,5 +85,18 @@ public class UserService(
 	public async Task<User?> Get(Guid id)
 	{
 		return await context.Users.FindAsync(id);
+	}
+
+	public async Task<User?> Get(ClaimsPrincipal claimsPrincipal)
+	{
+		var nameId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+		
+		if(nameId == null)
+			return null;
+
+		if (!Guid.TryParse(nameId, out var guid))
+			return null;
+
+		return await Get(guid);
 	}
 }
