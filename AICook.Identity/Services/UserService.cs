@@ -2,6 +2,7 @@ using System.Security.Claims;
 using AICook.Identity.Data;
 using AICook.Model;
 using AICook.Model.Dto;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,8 +23,6 @@ public class UserService(
 	ITokenService tokenService
 ) : IUserService
 {
-	private const int BCryptWorkFactor = 13;
-	
 	public async Task<User?> Authenticate(LoginDto model)
 	{
 		var user = await Get(model.Email);
@@ -34,7 +33,7 @@ public class UserService(
 		if(user.PasswordHash == null)
 			return null;
 		
-		if(!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
+		if (!Argon2.Verify(user.PasswordHash, model.Password))
 			return null;
 
 		return user;
@@ -50,7 +49,7 @@ public class UserService(
 		if (loginToken.Expires <= DateTime.Now)
 			return null;
 		
-		if (!BCrypt.Net.BCrypt.Verify(model.Token, loginToken.TokenHash))
+		if (!Argon2.Verify(loginToken.TokenHash, model.Token))
 			return null;
 		
 		loginToken.UseCount++;
@@ -62,7 +61,7 @@ public class UserService(
 
 	public async Task<User?> Register(RegisterDto model)
 	{
-		var passwordHashed = BCrypt.Net.BCrypt.HashPassword(model.Password, BCryptWorkFactor);
+		var passwordHashed = Argon2.Hash(model.Password);
 		
 		var entry = await context.Users.AddAsync(
 			new User

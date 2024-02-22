@@ -1,5 +1,6 @@
 using AICook.Identity.Data;
 using AICook.Model;
+using Isopoh.Cryptography.Argon2;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
@@ -15,7 +16,6 @@ public interface ITokenService
 public class TokenService(IdentityContext context) : ITokenService
 {
 	private const int TokenExpiresAfterDays = 30;
-	private const int BCryptWorkFactor = 13;
 	
 	public async Task<LoginToken?> Get(Guid tokenId)
 	{
@@ -26,7 +26,8 @@ public class TokenService(IdentityContext context) : ITokenService
 
 	public async Task<LoginToken?> Create(User user, string token)
 	{
-		var hash = BCrypt.Net.BCrypt.HashPassword(token, BCryptWorkFactor);
+		var hash = Argon2.Hash(token);
+		
 		var loginToken = new LoginToken
 		{
 			TokenHash = hash,
