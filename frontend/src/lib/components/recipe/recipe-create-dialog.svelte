@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, buttonVariants } from '$lib/components/ui/button';
+	import { buttonVariants } from '$lib/components/ui/button';
   import * as Dialog from "$lib/components/ui/dialog";
   import * as Form from "$lib/components/ui/form";
 
@@ -8,7 +8,6 @@
   import type { FormOptions } from 'formsnap';
   import type { FormResult } from 'sveltekit-superforms/client';
   import type { ActionData } from '../../../routes/recipe/create/$types';
-
   let dialogOpen: boolean = false;
 
   const options: FormOptions<FormSchema> = {
@@ -48,16 +47,5 @@
         <Form.Button>Create</Form.Button>
       </Dialog.Footer>
     </Form.Root>
-    <!-- <form on:submit|preventDefault={send}>
-      <div class="grid gap-4 py-4">
-        <div class="grid grid-cols-4 items-center gap-4">
-          <Label class="text-right font-bold">Recipe Idea</Label>
-          <Input id="prompt" value="" class="col-span-3" />
-        </div>
-      </div>
-      <Dialog.Footer>
-        <Button type="submit">Create</Button>
-      </Dialog.Footer>
-    </form> -->
   </Dialog.Content>
 </Dialog.Root>

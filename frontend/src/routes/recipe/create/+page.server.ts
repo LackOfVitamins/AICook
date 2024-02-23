@@ -6,6 +6,13 @@ import { PRIVATE_API_URL } from "$env/static/private";
 export const actions: Actions = {
   default: async (event) => {
     const form = await superValidate(event, formSchema);
+    const loginSession = event.locals.loginSession;
+
+    if (loginSession == undefined) {
+      return fail(401, {
+        form
+      });
+    }
 
     if (!form.valid) {
       return fail(400, {
@@ -17,6 +24,7 @@ export const actions: Actions = {
     {
       method: "POST",
       headers: {
+        Authorization: `Bearer ${loginSession.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(form.data)
