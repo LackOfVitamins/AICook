@@ -8,6 +8,7 @@ namespace AICook.Identity.Services;
 
 public interface ITokenService
 {
+	public Task<IEnumerable<LoginToken>> Get();
 	public Task<LoginToken?> Get(Guid tokenId);
 	public Task<LoginToken?> Create(User user, string token);
 	public Task Update(LoginToken loginToken);
@@ -16,7 +17,14 @@ public interface ITokenService
 public class TokenService(IdentityContext context) : ITokenService
 {
 	private const int TokenExpiresAfterDays = 30;
-	
+
+	public async Task<IEnumerable<LoginToken>> Get()
+	{
+		return await context.Tokens
+			.Include(x => x.User)
+			.ToListAsync();
+	}
+
 	public async Task<LoginToken?> Get(Guid tokenId)
 	{
 		return await context.Tokens

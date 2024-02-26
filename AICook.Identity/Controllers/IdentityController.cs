@@ -35,7 +35,7 @@ public class IdentityController(
 	}
 	
 	[HttpPost("token")]
-	public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginTokenDto model)
+	public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginTokenLoginDto model)
 	{
 		// if(Guid.TryParse(model.))
 		var user = await userService.Authenticate(model);

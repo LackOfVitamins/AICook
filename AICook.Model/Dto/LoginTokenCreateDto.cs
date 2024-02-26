@@ -1,5 +1,5 @@
 namespace AICook.Model.Dto;
 
-public record TokenCreateDto(
+public record LoginTokenCreateDto(
 	Guid UserId
 );

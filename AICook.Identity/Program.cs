@@ -84,7 +84,7 @@ public class Program
 		// Mapper 
 		services.AddAutoMapper(options =>
 		{
-			options.AddProfile<UserProfile>();
+			options.AddProfile<IdentityProfile>();
 		});
 	}
 	

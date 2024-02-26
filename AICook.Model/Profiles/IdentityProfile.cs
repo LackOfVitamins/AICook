@@ -3,10 +3,11 @@ using AutoMapper;
 
 namespace AICook.Model.Profiles;
 
-public class UserProfile : Profile
+public class IdentityProfile : Profile
 {
-	public UserProfile()
+	public IdentityProfile()
 	{
 		CreateMap<User, UserDto>();
+		CreateMap<LoginToken, LoginTokenDto>();
 	}
 }

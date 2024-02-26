@@ -1,23 +1,33 @@
-using System.Drawing;
 using AICook.Identity.Services;
 using AICook.Model;
 using AICook.Model.Dto;
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RandomString4Net;
 
-namespace AICook.Identity.Controllers;
+namespace AICook.Identity.Controllers.Admin;
 
 [Authorize(Roles = nameof(UserRole.Admin))]
-[Route("identity/admin")]
+[Route("identity/admin/token")]
 [ApiController]
-public class IdentityAdminController(
+public class TokenAdminController(
 	IUserService userService,
-	ITokenService tokenService
+	ITokenService tokenService,
+	IMapper mapper
 ) : ControllerBase
 {
-	[HttpPost("token/create")]
-	public async Task<ActionResult<TokenCreateResponseDto>> Create([FromBody] TokenCreateDto model)
+	[HttpGet]
+	public async Task<ActionResult<IEnumerable<LoginTokenDto>>> Get()
+	{
+		var loginTokens = await tokenService.Get();
+		return Ok(
+			loginTokens.Select(mapper.Map<LoginTokenDto>)
+		);
+	}
+
+	[HttpPost]
+	public async Task<ActionResult<LoginTokenCreateResponseDto>> Create([FromBody] LoginTokenCreateDto model)
 	{
 		var user = await userService.Get(model.UserId);
 
@@ -30,7 +40,7 @@ public class IdentityAdminController(
 			return StatusCode(500);
 		
 		return Ok(
-			new TokenCreateResponseDto(
+			new LoginTokenCreateResponseDto(
 				randomString
 			)
 		);

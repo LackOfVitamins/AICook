@@ -11,8 +11,9 @@ namespace AICook.Identity.Services;
 public interface IUserService
 {
 	Task<User?> Authenticate(LoginDto model);
-	Task<User?> Authenticate(LoginTokenDto model);
+	Task<User?> Authenticate(LoginTokenLoginDto model);
 	Task<User?> Register(RegisterDto model);
+	Task<IEnumerable<User>> Get();
 	Task<User?> Get(string email);
 	Task<User?> Get(Guid id);
 	Task<User?> Get(ClaimsPrincipal claimsPrincipal);
@@ -39,7 +40,7 @@ public class UserService(
 		return user;
 	}
 
-	public async Task<User?> Authenticate(LoginTokenDto model)
+	public async Task<User?> Authenticate(LoginTokenLoginDto model)
 	{
 		var loginToken = await tokenService.Get(model.Id);
 
@@ -71,9 +72,14 @@ public class UserService(
 				Role = model.Role
 			}
 		);
-
+ 
 		await context.SaveChangesAsync();
 		return entry.Entity;
+	}
+
+	public async Task<IEnumerable<User>> Get()
+	{
+		return await context.Users.ToListAsync();
 	}
 
 	public async Task<User?> Get(string email)
