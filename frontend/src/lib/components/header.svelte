@@ -5,10 +5,10 @@
   import * as Avatar from "$lib/components/ui/avatar";
   import RecipeCreateDialog from '$lib/components/recipe/recipe-create-dialog.svelte';
   import type { FormSchema } from '$routes/recipe/create/schema';
-  import type { SuperValidated } from 'sveltekit-superforms';
+  import type { Infer, SuperValidated } from 'sveltekit-superforms';
+  import { page } from '$app/stores';
 
-  export let recipeCreateForm: SuperValidated<FormSchema>;
-  export let session: LoginSession;
+  export let recipeCreateForm: SuperValidated<Infer<FormSchema>>;
 </script>
 
 <header class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -22,8 +22,8 @@
     </div>
     <div>
       <nav class="flex items-center space-x-2">
-        {#if session != undefined}
-          <RecipeCreateDialog form="{recipeCreateForm}" />
+        {#if $page.data.session != undefined}
+          <RecipeCreateDialog data={recipeCreateForm} />
         {/if}
         <ModeToggle />
 

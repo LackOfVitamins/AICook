@@ -1,5 +1,7 @@
 <script lang="ts">
-  export let recipe: RecipeListItemType;
+  import type { RecipeListItem } from "@/types/recipe";
+
+  export let recipe: RecipeListItem;
 </script>
 
 <a href="/recipe/{recipe.id}" class="border bg-card rounded-sm md:w-[195px] w-[140px]">

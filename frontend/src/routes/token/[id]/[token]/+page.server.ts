@@ -1,5 +1,6 @@
 import { dev } from "$app/environment";
 import { PRIVATE_API_URL } from "$env/static/private";
+import type { LoginSession } from "@/types/loginSession";
 import { redirect, type ServerLoad } from "@sveltejs/kit";
 
 export const load: ServerLoad = async ({ cookies, fetch, params }) => {

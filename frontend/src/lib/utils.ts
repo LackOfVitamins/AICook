@@ -60,3 +60,14 @@ export const flyAndScale = (
         easing: cubicOut
     };
 };
+
+export function enumToKeyValuePairs<T extends Record<string, number | string>>(enumObject: T): Array<{ key: keyof T; value: T[keyof T] }> {
+    return Object.keys(enumObject)
+        .filter((key) => isNaN(Number(key)))
+        .map((key) => (
+            {
+                key: key as keyof T,
+                value: enumObject[key as keyof T],
+            }
+        ));
+}

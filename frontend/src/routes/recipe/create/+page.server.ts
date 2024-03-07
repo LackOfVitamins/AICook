@@ -1,11 +1,12 @@
 import { fail, type Actions } from "@sveltejs/kit";
-import { superValidate } from "sveltekit-superforms/server";
+import { superValidate } from "sveltekit-superforms";
 import { formSchema } from "./schema";
 import { PRIVATE_API_URL } from "$env/static/private";
+import { zod } from "sveltekit-superforms/adapters";
 
 export const actions: Actions = {
   default: async (event) => {
-    const form = await superValidate(event, formSchema);
+    const form = await superValidate(event, zod(formSchema));
     const loginSession = event.locals.loginSession;
 
     if (loginSession == undefined) {

@@ -1,4 +1,5 @@
 import { PRIVATE_API_URL } from "$env/static/private";
+import type { User } from "@/types/user";
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve}) => {
@@ -22,8 +23,7 @@ export const handle: Handle = async ({ event, resolve}) => {
       };
     }
   }
-
-
+  
   const response = await resolve(event);
   return response;
 }
