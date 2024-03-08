@@ -1,6 +1,7 @@
 import { derived, writable } from "svelte/store"
 import { dedupe } from "./dedupe"
 import { page } from "$app/stores"
+import type { LoginSession } from "./types/loginSession"
 
 const internal = writable<LoginSession>()
 

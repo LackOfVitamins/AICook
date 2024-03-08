@@ -22,11 +22,3 @@
     <slot />
 	</div>
 </div>
-<!-- <div class="hidden md:block">
-  <div class="bg-background">
-    <div class="grid lg:grid-cols-5">
-      <Sidebar class="hidden lg:block" items={items} />
-      <slot />
-    </div>
-  </div>
-</div> -->

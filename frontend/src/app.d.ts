@@ -1,5 +1,6 @@
 // See https://kit.svelte.dev/docs/types#app
 
+import type { LocalToastItem } from "@/toastStore";
 import type { LoginSession } from "@/types/loginSession";
 
 // for information about these interfaces
@@ -12,7 +13,8 @@ declare global {
 
 		// interface Error {}
 		interface Locals {
-			loginSession: LoginSession
+			loginSession: LoginSession,
+			toasts: Array<LocalToastItem>,
 			// token: string
 		}
 		interface PageData {

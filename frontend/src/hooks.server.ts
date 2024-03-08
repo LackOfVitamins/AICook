@@ -3,6 +3,8 @@ import type { User } from "@/types/user";
 import type { Handle, HandleFetch } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve}) => {
+  event.locals.toasts = [];
+
   const token = event.cookies.get('userToken');
 
   if(token != undefined)

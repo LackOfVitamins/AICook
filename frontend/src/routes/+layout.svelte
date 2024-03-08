@@ -1,11 +1,21 @@
 <script lang="ts">
+	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 	import "../app.pcss";
   import Header from "$components/header.svelte";
   import { ModeWatcher } from "mode-watcher";
   import type { LayoutData } from "./$types";
+  import { Toaster } from "$components/ui/sonner";
+  import { afterUpdate } from "svelte";
+  import { renderToasts } from "@/toast";
 
 	export let data: LayoutData;
+
+	onMount(() => {
+		renderToasts(data.toasts);
+	});
 </script>
+
 
 <div class="app">
 	<Header recipeCreateForm={data.form} />
@@ -15,8 +25,7 @@
 
 	<footer>
 	</footer>
-	<ModeWatcher />
-</div>
 
-<style>
-</style>
+	<ModeWatcher />
+	<Toaster richColors expand />
+</div>

@@ -4,11 +4,12 @@ import { superValidate } from "sveltekit-superforms";
 import { zod } from "sveltekit-superforms/adapters";
 
 export const load: LayoutServerLoad = async ({ locals }) => {
-  const { loginSession } = locals
-
+  const { loginSession, toasts } = locals
+  
   return {
     form: await superValidate(zod(formSchema)),
-    session: loginSession
+    session: loginSession,
+    toasts: toasts
   };
 };
 
