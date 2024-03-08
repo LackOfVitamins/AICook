@@ -6,10 +6,10 @@ import { zod } from "sveltekit-superforms/adapters";
 
 export const actions: Actions = {
   default: async (event) => {
+    const { locals, fetch } = event;
     const form = await superValidate(event, zod(formSchema));
-    const loginSession = event.locals.loginSession;
 
-    if (loginSession == undefined) {
+    if (locals.loginSession == undefined) {
       return fail(401, {
         form
       });
