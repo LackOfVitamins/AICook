@@ -8,11 +8,7 @@ export const load: ServerLoad = async ({ locals, fetch }) => {
   if (locals.loginSession == undefined)
     return {};
 
-  const res = await fetch(`${PRIVATE_API_URL}/identity/admin/token`, {
-    headers: {
-      Authorization: `Bearer ${locals.loginSession.token}`
-    }
-  });
+  const res = await fetch(`${PRIVATE_API_URL}/identity/admin/token`);
 
   if(!res.ok)
     return {};

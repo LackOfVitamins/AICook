@@ -12,11 +12,7 @@ export const load: PageServerLoad = async ({ locals, fetch }) => {
   if (locals.loginSession == undefined)
     return {};
 
-  const res = await fetch(`${PRIVATE_API_URL}/identity/admin/user`, {
-    headers: {
-      Authorization: `Bearer ${locals.loginSession.token}` 
-    }
-  });
+  const res = await fetch(`${PRIVATE_API_URL}/identity/admin/user`);
 
   if(!res.ok)
     return {};
@@ -50,7 +46,6 @@ export const actions: Actions = {
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${loginSession.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(form.data)

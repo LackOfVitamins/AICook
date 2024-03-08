@@ -25,7 +25,6 @@ export const actions: Actions = {
     {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${loginSession.token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify(form.data)
