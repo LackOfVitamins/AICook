@@ -37,6 +37,9 @@ public class Program
 		// Logging
 		services.AddLogging();
 		
+		// Problem 
+		services.AddProblemDetails();
+		
 		// Database
 		var connectionString = configuration.GetConnectionString("MySqlDatabase")!;
 		services.AddDbContext<IdentityContext>(

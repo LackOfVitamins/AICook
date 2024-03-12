@@ -1,6 +1,7 @@
-using System.Security.Claims;
+using System.ComponentModel.DataAnnotations;
+using System.Security.Authentication;
+using AICook.Identity.Exceptions.User;
 using AICook.Identity.Services;
-using AICook.Model;
 using AICook.Model.Dto;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -20,49 +21,83 @@ public class IdentityController(
 	[HttpPost("login")]
 	public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginDto model)
 	{
-		var user = await userService.Authenticate(model);
+		try
+		{
+			var user = await userService.Authenticate(model);
 
-		if (user == null)
-			return Unauthorized();
-
-		var token = jwtService.CreateJwtToken(user);
-		return Ok(
-			new LoginResponseDto(
-				jwtService.WriteJwtToken(token),
-				mapper.Map<UserDto>(user)
-			)
-		);
+			var token = jwtService.CreateJwtToken(user);
+			return Ok(
+				new LoginResponseDto(
+					jwtService.WriteJwtToken(token),
+					mapper.Map<UserDto>(user)
+				)
+			);
+		}
+		catch (AuthenticationException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status400BadRequest, 
+				detail: e.Message
+			);
+		}
 	}
 	
 	[HttpPost("token")]
 	public async Task<ActionResult<LoginResponseDto>> Login([FromBody] LoginTokenLoginDto model)
 	{
-		// if(Guid.TryParse(model.))
-		var user = await userService.Authenticate(model);
+		try
+		{
+			var user = await userService.Authenticate(model);
 
-		if (user == null)
-			return Unauthorized();
-
-		var token = jwtService.CreateJwtToken(user);
-		return Ok(
-			new LoginResponseDto(
-				jwtService.WriteJwtToken(token),
-				mapper.Map<UserDto>(user)
-			)
-		);
+			var token = jwtService.CreateJwtToken(user);
+			return Ok(
+				new LoginResponseDto(
+					jwtService.WriteJwtToken(token),
+					mapper.Map<UserDto>(user)
+				)
+			);
+		}
+		catch (AuthenticationException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status400BadRequest,
+				detail: e.Message
+			);
+		}
+		catch (UserBlockedException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status403Forbidden,
+				detail: e.Message
+			);
+		}
 	}
 
 	[Authorize]
 	[HttpGet("user")]
-	public async Task<ActionResult<UserDto>> UserInfo()
+	public async Task<ActionResult<UserDto>> CurrentUserInfo()
 	{
-		var user = await userService.Get(HttpContext.User);
-		
-		if(user == null)
-			return BadRequest();
+		try
+		{
+			var user = await userService.Get(HttpContext.User);
 
-		return Ok(
-			mapper.Map<UserDto>(user)
-		);
+			return Ok(
+				mapper.Map<UserDto>(user)
+			);
+		}
+		catch (ValidationException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status400BadRequest,
+				detail: e.Message
+			);
+		}
+		catch (UserNotFoundException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: e.Message
+			);
+		}
 	}
 }

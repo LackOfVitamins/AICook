@@ -42,6 +42,9 @@ public class Program
         // Logging
         services.AddLogging();
         
+        // Problem 
+        services.AddProblemDetails();
+        
         // Model Mapping
         services.AddAutoMapper(config =>
         {

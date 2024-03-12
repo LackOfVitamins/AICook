@@ -1,22 +1,24 @@
+using System.ComponentModel.DataAnnotations;
+using System.Security.Authentication;
 using System.Security.Claims;
 using AICook.Identity.Data;
+using AICook.Identity.Exceptions.User;
 using AICook.Model;
 using AICook.Model.Dto;
 using Isopoh.Cryptography.Argon2;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace AICook.Identity.Services;
 
 public interface IUserService
 {
-	Task<User?> Authenticate(LoginDto model);
-	Task<User?> Authenticate(LoginTokenLoginDto model);
-	Task<User?> Register(RegisterDto model);
+	Task<User> Authenticate(LoginDto model);
+	Task<User> Authenticate(LoginTokenLoginDto model);
+	Task<User> Register(RegisterDto model);
 	Task<IEnumerable<User>> Get();
 	Task<User?> Get(string email);
 	Task<User?> Get(Guid id);
-	Task<User?> Get(ClaimsPrincipal claimsPrincipal);
+	Task<User> Get(ClaimsPrincipal claimsPrincipal);
 }
 
 public class UserService(
@@ -24,43 +26,49 @@ public class UserService(
 	ITokenService tokenService
 ) : IUserService
 {
-	public async Task<User?> Authenticate(LoginDto model)
+	public async Task<User> Authenticate(LoginDto model)
 	{
 		var user = await Get(model.Email);
+		if (user == null)
+			throw new AuthenticationException("Incorrect email or password.");
+		
+		if (user.Blocked)
+			throw new UserBlockedException("Your account is blocked!");
 
-		if(user == null)
-			return null;
-		
-		if(user.PasswordHash == null)
-			return null;
-		
+		if (user.PasswordHash == null)
+			throw new AuthenticationException("You can not login using a password.");
+
 		if (!Argon2.Verify(user.PasswordHash, model.Password))
-			return null;
+			throw new AuthenticationException("Incorrect email or password.");
 
 		return user;
 	}
 
-	public async Task<User?> Authenticate(LoginTokenLoginDto model)
+	public async Task<User> Authenticate(LoginTokenLoginDto model)
 	{
 		var loginToken = await tokenService.Get(model.Id);
 
 		if (loginToken == null)
-			return null;
+			throw new AuthenticationException("Incorrect token!");
 
 		if (loginToken.Expires <= DateTime.Now)
-			return null;
+			throw new AuthenticationException("Token is expired!");
 		
 		if (!Argon2.Verify(loginToken.TokenHash, model.Token))
-			return null;
+			throw new AuthenticationException("Incorrect token!");
 		
 		loginToken.UseCount++;
 		loginToken.LastUsed = DateTime.Now;
 		await tokenService.Update(loginToken);
 
-		return loginToken.User;
+		var user = loginToken.User;
+		if (user.Blocked)
+			throw new UserBlockedException("User is blocked!");
+		
+		return user;
 	}
 
-	public async Task<User?> Register(RegisterDto model)
+	public async Task<User> Register(RegisterDto model)
 	{
 		var passwordHashed = Argon2.Hash(model.Password);
 		
@@ -68,6 +76,7 @@ public class UserService(
 			new User
 			{
 				Email = model.Email,
+				FullName = model.FullName,
 				PasswordHash = passwordHashed,
 				Role = model.Role
 			}
@@ -84,24 +93,37 @@ public class UserService(
 
 	public async Task<User?> Get(string email)
 	{
-		return await context.Users.SingleOrDefaultAsync(x => x.Email == email);
+		var user = await context.Users.SingleOrDefaultAsync(x => x.Email == email);
+		
+		// if (user == null)
+		// 	throw new UserNotFoundException("User is not found!");
+		
+		return user;
 	}
 
 	public async Task<User?> Get(Guid id)
-	{
-		return await context.Users.FindAsync(id);
+	{ 
+		var user = await context.Users.FindAsync(id);
+
+		// if (user == null)
+		// 	throw new UserNotFoundException("User is not found!");
+		
+		return user;
 	}
 
-	public async Task<User?> Get(ClaimsPrincipal claimsPrincipal)
+	public async Task<User> Get(ClaimsPrincipal claimsPrincipal)
 	{
 		var nameId = claimsPrincipal.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		
-		if(nameId == null)
-			return null;
+		if (nameId == null)
+			throw new ValidationException("Token is not valid!");
 
 		if (!Guid.TryParse(nameId, out var guid))
-			return null;
+			throw new ValidationException("Token is not valid!");
 
-		return await Get(guid);
+		var user = await Get(guid);
+		if(user == null)
+			throw new UserNotFoundException("User is not found!");
+		
+		return user;
 	}
 }

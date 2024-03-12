@@ -1,3 +1,4 @@
+using AICook.Identity.Exceptions.User;
 using AICook.Identity.Services;
 using AICook.Model;
 using AICook.Model.Dto;
@@ -30,15 +31,16 @@ public class TokenAdminController(
 	public async Task<ActionResult<LoginTokenCreateResponseDto>> Create([FromBody] LoginTokenCreateDto model)
 	{
 		var user = await userService.Get(model.UserId);
-
-		if (user == null)
-			return UnprocessableEntity("User is not found!");
+		
+		if(user == null)
+			return Problem(
+				statusCode: StatusCodes.Status422UnprocessableEntity,
+				detail: "User does not exist!"
+			);
 		
 		var randomString = GenerateRandomString();
-		var loginToken = await tokenService.Create(user, randomString);
-		if (loginToken == null)
-			return StatusCode(500);
-		
+		await tokenService.Create(user, randomString);
+
 		return Ok(
 			new LoginTokenCreateResponseDto(
 				randomString

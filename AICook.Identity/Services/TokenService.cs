@@ -2,7 +2,6 @@ using AICook.Identity.Data;
 using AICook.Model;
 using Isopoh.Cryptography.Argon2;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace AICook.Identity.Services;
 

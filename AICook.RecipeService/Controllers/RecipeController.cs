@@ -37,19 +37,22 @@ namespace AICook.RecipeService.Controllers
                 .Include(r => r.Steps)
                 .Include(r => r.Ingredients)
                 .SingleOrDefaultAsync(r => r.Id == id);
-            
+
             if (recipe == null)
-            {
-                return NotFound();
-            }
+				return Problem(
+				    statusCode: StatusCodes.Status404NotFound,
+				    detail: "Recipe does not exist!"
+				);
             
-            return mapper.Map<RecipeDto>(recipe);
+			return Ok(
+			    mapper.Map<RecipeDto>(recipe)
+			);
         }
      
         [Authorize]
         [HttpPost("create")]
         [Consumes("application/json")]
-        public async Task<IActionResult> CreateJson([FromBody] AiRecipeRequest recipeIdea)
+        public async Task<ActionResult> CreateJson([FromBody] AiRecipeRequest recipeIdea)
         {
             logger.LogInformation("Sending AiRecipeRequest with prompt: {Prompt}", recipeIdea.Prompt);
             await bus.Publish(recipeIdea);

@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+using AICook.Identity.Exceptions.User;
 using AICook.Identity.Services;
 using AICook.Model;
 using AICook.Model.Dto;
@@ -19,7 +21,7 @@ public class UserAdminController(
 	public async Task<ActionResult<IEnumerable<UserDto>>> Get()
 	{
 		var users = await userService.Get();
-		return Ok( 
+		return Ok(
 			users.Select(mapper.Map<UserDto>)
 		);
 	}
@@ -28,10 +30,15 @@ public class UserAdminController(
 	public async Task<ActionResult<UserDto>> Get(Guid id)
 	{
 		var user = await userService.Get(id);
-		
-		if (user == null)
-			return NotFound();
 
+		if (user == null)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: "User does not exist!"
+			);
+		}
+		
 		return Ok(
 			mapper.Map<UserDto>(user)
 		);
@@ -40,14 +47,21 @@ public class UserAdminController(
 	[HttpPost]
 	public async Task<ActionResult<UserDto>> Create([FromBody] RegisterDto dto)
 	{
-		var user = await userService.Register(dto);
+		try
+		{
+			var user = await userService.Register(dto);
 
-		if (user == null)
-			return UnprocessableEntity();
-		
-		return Created(
-			Url.Action("Get", new { id = user.Id }),
-			mapper.Map<UserDto>(user)
-		);
+			return Created(
+				Url.Action("Get", new { id = user.Id }),
+				mapper.Map<UserDto>(user)
+			);
+		}
+		catch (ValidationException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status422UnprocessableEntity,
+				detail: e.Message
+			);
+		}
 	}
 }
