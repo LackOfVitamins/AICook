@@ -8,6 +8,12 @@ public class IdentityProfile : Profile
 	public IdentityProfile()
 	{
 		CreateMap<User, UserDto>();
+		CreateMap<UserUpdateDto, User>()
+			.ForAllMembers(
+				opts => 
+					opts.Condition((_, _, srcMember) => srcMember != null)
+			);
+		
 		CreateMap<LoginToken, LoginTokenDto>();
 	}
 }

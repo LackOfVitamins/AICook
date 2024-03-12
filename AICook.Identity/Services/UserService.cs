@@ -5,6 +5,7 @@ using AICook.Identity.Data;
 using AICook.Identity.Exceptions.User;
 using AICook.Model;
 using AICook.Model.Dto;
+using AutoMapper;
 using Isopoh.Cryptography.Argon2;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,6 +16,7 @@ public interface IUserService
 	Task<User> Authenticate(LoginDto model);
 	Task<User> Authenticate(LoginTokenLoginDto model);
 	Task<User> Register(RegisterDto model);
+	Task<User> Update(Guid id, UserUpdateDto model);
 	Task<IEnumerable<User>> Get();
 	Task<User?> Get(string email);
 	Task<User?> Get(Guid id);
@@ -23,7 +25,8 @@ public interface IUserService
 
 public class UserService(
 	IdentityContext context,
-	ITokenService tokenService
+	ITokenService tokenService,
+	IMapper mapper
 ) : IUserService
 {
 	public async Task<User> Authenticate(LoginDto model)
@@ -84,6 +87,19 @@ public class UserService(
  
 		await context.SaveChangesAsync();
 		return entry.Entity;
+	}
+	
+	public async Task<User> Update(Guid id, UserUpdateDto model)
+	{
+		var user = await Get(id);
+
+		if (user == null)
+			throw new UserNotFoundException("User does not exist!");
+		
+		mapper.Map(model, user);
+		await context.SaveChangesAsync();
+		
+		return user;
 	}
 
 	public async Task<IEnumerable<User>> Get()

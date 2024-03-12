@@ -32,16 +32,40 @@ public class UserAdminController(
 		var user = await userService.Get(id);
 
 		if (user == null)
-		{
 			return Problem(
 				statusCode: StatusCodes.Status404NotFound,
 				detail: "User does not exist!"
 			);
-		}
 		
 		return Ok(
 			mapper.Map<UserDto>(user)
 		);
+	}
+	
+	[HttpPut("{id:guid}")]
+	public async Task<ActionResult<UserDto>> Update(Guid id, UserUpdateDto dto)
+	{
+		// if (!string.IsNullOrEmpty(dto.Id.ToString()) && id != dto.Id)
+		// 	return Problem(
+		// 		statusCode: StatusCodes.Status400BadRequest,
+		// 		detail: "Ids are not equal."
+		// 	);
+
+		try
+		{
+			var user = await userService.Update(id, dto);
+			
+			return Ok(
+				mapper.Map<UserDto>(user)
+			);
+		}
+		catch (UserNotFoundException e)
+		{
+			return Problem(
+				statusCode: StatusCodes.Status404NotFound,
+				detail: e.Message
+			);
+		}
 	}
 	
 	[HttpPost]
